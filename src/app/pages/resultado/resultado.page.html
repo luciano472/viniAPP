@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/scan"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Resultado</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="ion-text-center" *ngIf="cargando">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div *ngIf="!cargando && disco">
+    <h2>{{ disco.titulo }}</h2>
+    <p>{{ disco.artista }}<span *ngIf="disco.anio"> · {{ disco.anio }}</span></p>
+    <p>Código: {{ disco.codigoBarras }}</p>
+
+    <ion-button expand="block" (click)="guardar()">Guardar en mi colección</ion-button>
+    <ion-button expand="block" fill="clear" (click)="cancelar()">Cancelar</ion-button>
+  </div>
+
+  <div class="ion-text-center" *ngIf="!cargando && noEncontrado">
+    <p>No encontramos ningún disco con ese código.</p>
+    <ion-button fill="outline" (click)="cancelar()">Probar con otro</ion-button>
+  </div>
+</ion-content>

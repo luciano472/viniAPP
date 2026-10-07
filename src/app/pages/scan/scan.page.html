@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Escanear disco</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-button expand="block" size="large" (click)="escanear()">
+    <ion-icon slot="start" name="camera-outline"></ion-icon>
+    Escanear código de barras
+  </ion-button>
+
+  <p class="ion-text-center ion-margin-top">o ingresalo a mano</p>
+
+  <ion-input
+    type="text"
+    inputmode="numeric"
+    label="Código de barras"
+    labelPlacement="floating"
+    fill="outline"
+    [(ngModel)]="codigoManual"
+  ></ion-input>
+  <ion-button expand="block" fill="outline" class="ion-margin-top" (click)="buscarManual()">
+    Buscar
+  </ion-button>
+
+  <ion-text color="danger" *ngIf="mensaje">
+    <p class="ion-text-center">{{ mensaje }}</p>
+  </ion-text>
+</ion-content>

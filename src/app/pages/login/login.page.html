@@ -1,0 +1,34 @@
+<ion-content class="ion-padding">
+  <div class="contenedor">
+    <h1>VINIAPP</h1>
+    <p>Tu colección de discos, siempre a mano</p>
+
+    <ion-input
+      type="email"
+      label="Email"
+      labelPlacement="floating"
+      fill="outline"
+      [(ngModel)]="email"
+    ></ion-input>
+
+    <ion-input
+      type="password"
+      label="Contraseña"
+      labelPlacement="floating"
+      fill="outline"
+      class="ion-margin-top"
+      [(ngModel)]="password"
+    ></ion-input>
+
+    <ion-text color="danger" *ngIf="mensaje">
+      <p>{{ mensaje }}</p>
+    </ion-text>
+
+    <ion-button expand="block" class="ion-margin-top" (click)="entrar()" [disabled]="cargando">
+      Ingresar
+    </ion-button>
+    <ion-button expand="block" fill="clear" (click)="registrar()" [disabled]="cargando">
+      Crear cuenta
+    </ion-button>
+  </div>
+</ion-content>

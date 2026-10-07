@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Mi Colección</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="irAPerfil()">
+        <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-text-center ion-padding" *ngIf="cargando">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ion-list *ngIf="!cargando && discos.length > 0">
+    <ion-item *ngFor="let disco of discos" button (click)="verDetalle(disco)">
+      <ion-label>
+        <h2>{{ disco.titulo }}</h2>
+        <p>{{ disco.artista }}<span *ngIf="disco.anio"> · {{ disco.anio }}</span></p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div class="ion-text-center ion-padding" *ngIf="!cargando && discos.length === 0">
+    <p>Todavía no tenés discos guardados.</p>
+    <p>Tocá el botón + para escanear el primero.</p>
+  </div>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="escanear()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
