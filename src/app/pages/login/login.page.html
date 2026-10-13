@@ -1,53 +1,70 @@
 <ion-content class="ion-padding">
   <div class="contenedor">
-    <h1>VINIAPP</h1>
-    <p>Tu colección de discos, siempre a mano</p>
 
-    <ion-input
-      type="email"
-      label="Email"
-      labelPlacement="floating"
-      fill="outline"
-      [(ngModel)]="email"
-    ></ion-input>
+    <div *ngIf="!pendienteConfirmar">
+      <h1>VINIAPP</h1>
+      <p>Tu colección de discos, siempre a mano</p>
 
-    <ion-input
-      type="password"
-      label="Contraseña"
-      labelPlacement="floating"
-      fill="outline"
-      class="ion-margin-top"
-      [(ngModel)]="password"
-    ></ion-input>
-
-    <div *ngIf="pendienteConfirmar">
       <ion-input
-        type="text"
-        inputmode="numeric"
-        label="Código del mail"
+        type="email"
+        label="Email"
+        labelPlacement="floating"
+        fill="outline"
+        [(ngModel)]="email"
+      ></ion-input>
+
+      <ion-input
+        type="password"
+        label="Contraseña"
         labelPlacement="floating"
         fill="outline"
         class="ion-margin-top"
-        [(ngModel)]="codigo"
+        [(ngModel)]="password"
       ></ion-input>
-      <ion-button expand="block" fill="outline" class="ion-margin-top" (click)="confirmar()" [disabled]="cargando">
-        Confirmar cuenta
+
+      <ion-text [color]="esError ? 'danger' : 'success'" *ngIf="mensaje">
+        <p>{{ mensaje }}</p>
+      </ion-text>
+
+      <ion-button expand="block" class="ion-margin-top" (click)="entrar()" [disabled]="cargando">
+        Ingresar
+      </ion-button>
+      <ion-button expand="block" fill="clear" (click)="registrar()" [disabled]="cargando">
+        Crear cuenta
+      </ion-button>
+      <ion-button expand="block" fill="clear" size="small" (click)="mostrarConfirmacion()">
+        Ya tengo un código
       </ion-button>
     </div>
 
-    <ion-text color="success" *ngIf="mensaje">
-      <p>{{ mensaje }}</p>
-    </ion-text>
+    <!-- Vista 2: ingresar el código -->
+    <div *ngIf="pendienteConfirmar">
+      <h2>Ingresá el código</h2>
+      <p>Te enviamos un código de verificación a <strong>{{ email }}</strong></p>
 
-    <ion-button expand="block" class="ion-margin-top" (click)="entrar()" [disabled]="cargando">
-      Ingresar
-    </ion-button>
-    <ion-button expand="block" fill="clear" (click)="registrar()" [disabled]="cargando">
-      Crear cuenta
-    </ion-button>
-    <ion-button expand="block" fill="clear" size="small" (click)="pendienteConfirmar = true">
-      Ya tengo un código
-    </ion-button>
+      <ion-input
+        type="text"
+        inputmode="numeric"
+        label="Código"
+        labelPlacement="floating"
+        fill="outline"
+        [(ngModel)]="codigo"
+      ></ion-input>
+
+      <ion-text [color]="esError ? 'danger' : 'success'" *ngIf="mensaje">
+        <p>{{ mensaje }}</p>
+      </ion-text>
+
+      <ion-button expand="block" class="ion-margin-top" (click)="confirmar()" [disabled]="cargando">
+        Confirmar cuenta
+      </ion-button>
+      <ion-button expand="block" fill="clear" (click)="reenviarCodigo()" [disabled]="cargando">
+        Reenviar código
+      </ion-button>
+      <ion-button expand="block" fill="clear" size="small" (click)="volver()">
+        Volver
+      </ion-button>
+    </div>
 
   </div>
 </ion-content>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   signUp, confirmSignUp, signIn, signOut,
-  getCurrentUser, fetchUserAttributes
+  getCurrentUser, fetchUserAttributes, resendSignUpCode
 } from 'aws-amplify/auth';
 
 @Injectable({
@@ -10,29 +10,30 @@ import {
 export class Auth {
 
   async login(email: string, password: string): Promise<boolean> {
-    try {
-      const { isSignedIn } = await signIn({ username: email, password });
-      return isSignedIn;
-    } catch (e: any) {
-      if (e?.name === 'UserAlreadyAuthenticatedException') return true;
-      console.error('Error en login', e);
-      return false;
-    }
-  }
+  try {
+    try { await signOut(); } catch {}
 
-  async registrar(email: string, password: string): Promise<boolean> {
-    try {
-      await signUp({
-        username: email,
-        password,
-        options: { userAttributes: { email } },
-      });
-      return true;
-    } catch (e) {
-      console.error('Error en registro', e);
-      return false;
-    }
+    const { isSignedIn } = await signIn({ username: email, password });
+    return isSignedIn;
+  } catch (e) {
+    console.error('Error en login', e);
+    return false;
   }
+}
+
+  async registrar(email: string, password: string): Promise<'ok' | 'existe' | 'error'> {
+  try {
+    await signUp({
+      username: email,
+      password,
+      options: { userAttributes: { email } },
+    });
+    return 'ok';
+  } catch (e: any) {
+    console.error('Error en registro', e);
+    return e?.name === 'UsernameExistsException' ? 'existe' : 'error';
+  }
+}
 
   async confirmarRegistro(email: string, codigo: string): Promise<boolean> {
     try {
@@ -43,6 +44,16 @@ export class Auth {
       return false;
     }
   }
+
+  async reenviarCodigo(email: string): Promise<boolean> {
+  try {
+    await resendSignUpCode({ username: email });
+    return true;
+  } catch (e) {
+    console.error('Error al reenviar código', e);
+    return false;
+  }
+}
 
   async logout(): Promise<void> {
     try {
