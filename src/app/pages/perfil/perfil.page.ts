@@ -11,15 +11,16 @@ import { Auth } from '../../services/auth';
 export class PerfilPage {
   email = '';
 
-  constructor(private auth: Auth, private router: Router, private cdr: ChangeDetectorRef) {}
+  constructor(private auth: Auth, private router: Router, private cdr: ChangeDetectorRef) { }
 
-  ionViewWillEnter() {
-    this.email = this.auth.obtenerEmail();
+  async ionViewWillEnter() {
+    this.email = await this.auth.obtenerEmail();
     this.cdr.detectChanges();
   }
 
-  cerrarSesion() {
-    this.auth.logout();
+  async cerrarSesion() {
+    await this.auth.logout();
     this.router.navigate(['/login'], { replaceUrl: true });
   }
+
 }

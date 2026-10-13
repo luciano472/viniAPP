@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth } from '../../services/auth';
 
@@ -11,36 +11,67 @@ import { Auth } from '../../services/auth';
 export class LoginPage {
   email = '';
   password = '';
+  codigo = '';
   mensaje = '';
   cargando = false;
+  pendienteConfirmar = false;
 
-  constructor(private auth: Auth, private router: Router) { }
+  constructor(
+    private auth: Auth,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   async entrar() {
     if (!this.email || !this.password) {
-      this.mensaje = 'Completá email y contraseña';
+      this.mostrar('Completá email y contraseña');
       return;
     }
     this.cargando = true;
-    this.mensaje = '';
     const ok = await this.auth.login(this.email, this.password);
     this.cargando = false;
     if (ok) {
       this.router.navigate(['/home']);
     } else {
-      this.mensaje = 'No se pudo iniciar sesión';
+      this.mostrar('No se pudo iniciar sesión. Revisá los datos o confirmá tu cuenta.');
     }
   }
 
   async registrar() {
     if (!this.email || !this.password) {
-      this.mensaje = 'Completá email y contraseña';
+      this.mostrar('Completá email y contraseña');
       return;
     }
     this.cargando = true;
-    this.mensaje = '';
     const ok = await this.auth.registrar(this.email, this.password);
     this.cargando = false;
-    this.mensaje = ok ? 'Cuenta creada, ahora podés ingresar' : 'No se pudo crear la cuenta';
+    if (ok) {
+      this.pendienteConfirmar = true;
+      this.mostrar('Te enviamos un código por mail. Ingresalo para confirmar tu cuenta.');
+    } else {
+      this.mostrar('No se pudo crear la cuenta. Revisá que la contraseña cumpla los requisitos.');
+    }
+  }
+
+  async confirmar() {
+    if (!this.codigo) {
+      this.mostrar('Ingresá el código');
+      return;
+    }
+    this.cargando = true;
+    const ok = await this.auth.confirmarRegistro(this.email, this.codigo);
+    this.cargando = false;
+    if (ok) {
+      this.pendienteConfirmar = false;
+      this.codigo = '';
+      this.mostrar('Cuenta confirmada, ya podés ingresar');
+    } else {
+      this.mostrar('Código incorrecto o vencido');
+    }
+  }
+
+  private mostrar(texto: string) {
+    this.mensaje = texto;
+    this.cdr.detectChanges();
   }
 }

@@ -20,7 +20,22 @@
       [(ngModel)]="password"
     ></ion-input>
 
-    <ion-text color="danger" *ngIf="mensaje">
+    <div *ngIf="pendienteConfirmar">
+      <ion-input
+        type="text"
+        inputmode="numeric"
+        label="Código del mail"
+        labelPlacement="floating"
+        fill="outline"
+        class="ion-margin-top"
+        [(ngModel)]="codigo"
+      ></ion-input>
+      <ion-button expand="block" fill="outline" class="ion-margin-top" (click)="confirmar()" [disabled]="cargando">
+        Confirmar cuenta
+      </ion-button>
+    </div>
+
+    <ion-text color="success" *ngIf="mensaje">
       <p>{{ mensaje }}</p>
     </ion-text>
 
@@ -30,5 +45,9 @@
     <ion-button expand="block" fill="clear" (click)="registrar()" [disabled]="cargando">
       Crear cuenta
     </ion-button>
+    <ion-button expand="block" fill="clear" size="small" (click)="pendienteConfirmar = true">
+      Ya tengo un código
+    </ion-button>
+
   </div>
 </ion-content>
