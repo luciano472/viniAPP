@@ -3,26 +3,51 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/scan"></ion-back-button>
     </ion-buttons>
-    <ion-title>Resultado</ion-title>
+    <ion-title>Resultados Encontrados</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
+  
   <div class="ion-text-center" *ngIf="cargando">
-    <ion-spinner></ion-spinner>
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Procesando resultados...</p>
   </div>
 
-  <div *ngIf="!cargando && disco">
-    <h2>{{ disco.titulo }}</h2>
-    <p>{{ disco.artista }}<span *ngIf="disco.anio"> · {{ disco.anio }}</span></p>
-    <p>Código: {{ disco.codigoBarras }}</p>
+  <div *ngIf="!cargando && albums.length > 0">
+    <p class="ion-padding-start">Se encontraron {{ albums.length }} ediciones para este código:</p>
 
-    <ion-button expand="block" (click)="guardar()">Guardar en mi colección</ion-button>
-    <ion-button expand="block" fill="clear" (click)="cancelar()">Cancelar</ion-button>
+    <ion-card *ngFor="let album of albums">
+      <ion-card-header>
+        <ion-card-title>{{ album.title }}</ion-card-title>
+        <ion-card-subtitle>
+          <span *ngFor="let art of album.artistCredit; let ultimo = last">
+            {{ art.name }}{{ !ultimo ? ', ' : '' }}
+          </span>
+          <span *ngIf="album.date"> · {{ album.date }}</span>
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p *ngIf="album.artistCredit[0]?.artist.disambiguation"><strong>Detalle:</strong> {{ album.artistCredit[0]?.artist?.disambiguation }}</p>
+        
+        <div *ngFor="let med of album.media">
+          <p><strong>Formato:</strong> {{ med.format }} ({{ med.trackCount }} canciones)</p>
+        </div>
+        
+        <p>Código: {{ album.barcode }}</p>
+
+        <ion-button expand="block" color="success" class="ion-margin-top" (click)="guardar(album)">
+          Guardar esta edición
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button expand="block" fill="clear" color="medium" (click)="cancelar()">Volver a Escanear</ion-button>
   </div>
 
   <div class="ion-text-center" *ngIf="!cargando && noEncontrado">
-    <p>No encontramos ningún disco con ese código.</p>
+    <p>No encontramos ningún disco con ese código de barras.</p>
     <ion-button fill="outline" (click)="cancelar()">Probar con otro</ion-button>
   </div>
 </ion-content>

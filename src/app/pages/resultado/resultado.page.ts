@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MusicbrainzService } from '../../services/musicbrainz';
 import { ColeccionService } from '../../services/coleccion';
 import { Disco } from '../../models/disco';
+import { Album } from '../../models/Album.types';
 
 @Component({
   selector: 'app-resultado',
@@ -13,6 +14,7 @@ import { Disco } from '../../models/disco';
 
 export class ResultadoPage {
   disco: Disco | null = null;
+  albums: Album[] = [];
   cargando = false;
   noEncontrado = false;
 
@@ -28,15 +30,15 @@ export class ResultadoPage {
     const codigo = this.route.snapshot.paramMap.get('codigo') ?? '';
     this.cargando = true;
     this.noEncontrado = false;
-    this.disco = await this.musicbrainz.buscarPorCodigo(codigo);
-    this.noEncontrado = this.disco === null;
+    this.albums = await this.musicbrainz.buscarPorCodigoDeBarras(codigo);
+    this.noEncontrado = this.albums.length === 0;
     this.cargando = false;
     this.cdr.detectChanges();
   }
 
-  async guardar() {
-    if (!this.disco) return;
-    await this.coleccion.agregarDisco(this.disco);
+  async guardar(albumSeleccionado: Album) {
+    if (this.albums.length === 0) return;
+    await this.coleccion.agregarDisco(albumSeleccionado);
     this.router.navigate(['/home']);
   }
 

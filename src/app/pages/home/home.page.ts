@@ -3,6 +3,12 @@ import { ColeccionService } from '../../services/coleccion';
 import { Disco } from '../../models/disco';
 import { Component } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
+import { Album } from '../../models/Album.types';
+import { AlbumReleases } from '../../models/AlbumReleases.types';
+import { Artist } from '../../models/Artists.types';
+import { MusicbrainzService } from '../../services/musicbrainz';
+import { Recording } from '../../models/Song.types';
+import { Label } from '../../models/RecordLabel.types';
 
 @Component({
   selector: 'app-home',
@@ -12,10 +18,10 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class HomePage {
 
-  discos: Disco[] = [];
+  discos: Album[] = [];
   cargando = false;
 
-  constructor(private coleccion: ColeccionService, private router: Router, private cdr: ChangeDetectorRef) {}
+  constructor(private coleccion: ColeccionService, private router: Router, private cdr: ChangeDetectorRef, private mbz: MusicbrainzService) {}
 
   async ionViewWillEnter() {
     this.cargando = true;
@@ -24,7 +30,7 @@ export class HomePage {
     this.cdr.detectChanges();
   }
 
-  verDetalle(disco: Disco) {
+  verDetalle(disco: Album) {
     this.router.navigate(['/detalle', disco.id]);
   }
 
@@ -35,5 +41,4 @@ export class HomePage {
   irAPerfil() {
     this.router.navigate(['/perfil']);
   }
-
 }

@@ -1,0 +1,8 @@
+{
+    "/ws": {
+        "target": "https://musicbrainz.org",
+        "secure": true,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    }
+}
