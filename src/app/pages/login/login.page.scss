@@ -1,6 +1,59 @@
+:host {
+  font-family: 'Nunito', 'Trebuchet MS', sans-serif;
+}
+
+ion-content {
+  --background:
+    linear-gradient(rgba(15, 9, 20, 0.58), rgba(15, 9, 20, 0.72)),
+    url('/assets/images/vinilos-fondo.png') center / cover no-repeat;
+  --color: #fff;
+}
+
 .contenedor {
-  max-width: 400px;
+  max-width: 440px;
   margin: 0 auto;
-  padding-top: 15vh;
+  padding: clamp(24px, 8vh, 64px) 0;
   text-align: center;
+}
+
+.contenedor > div {
+  padding: clamp(24px, 7vw, 36px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 28px;
+  background: rgba(20, 14, 25, 0.82);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+}
+
+h1,
+h2 {
+  font-family: 'Righteous', 'Trebuchet MS', sans-serif;
+  letter-spacing: 0.03em;
+}
+
+h1 {
+  color: #ffcc4d;
+}
+
+.contenedor p {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+ion-input {
+  --border-radius: 16px;
+  --color: #fff;
+  --highlight-color-focused: #ffcc4d;
+  --placeholder-color: rgba(255, 255, 255, 0.65);
+}
+
+ion-button {
+  --border-radius: 16px;
+  font-family: 'Nunito', 'Trebuchet MS', sans-serif;
+  font-weight: 800;
+}
+
+ion-button:not([fill='clear']) {
+  --background: #ffcc4d;
+  --background-activated: #f2b92e;
+  --color: #241526;
 }

@@ -10,12 +10,43 @@
 </ion-header>
 
 <ion-content>
+  <div class="bienvenida">
+    <h1>Hola{{ nombre ? ', ' + nombre : '' }}</h1>
+    <p class="subtitulo">Esta es tu colección</p>
+
+    <ion-searchbar 
+      *ngIf="!cargando && discos.length > 0" 
+      placeholder="Buscar por título o artista" 
+      [debounce]="200"
+      (ionInput)="onBuscar($event)">
+    </ion-searchbar>
+
+    <ng-container *ngIf="!cargando && discosFiltrados.length > 0">
+      <div class="resumen">
+        <div class="tarjeta">
+          <span class="numero">{{ totalDiscos }}</span>
+          <span class="etiqueta">{{ totalDiscos === 1 ? 'Disco' : 'Discos' }}</span>
+        </div>
+        <div class="tarjeta">
+          <span class="numero">{{ totalArtistas }}</span>
+          <span class="etiqueta">{{ totalArtistas === 1 ? 'Artista' : 'Artistas' }}</span>
+        </div>
+      </div>
+
+      <div class="ultimo" *ngIf="ultimoDisco" (click)="verDetalle(ultimoDisco)">
+        <span class="etiqueta">Último agregado</span>
+        <h3>{{ ultimoDisco.titulo }}</h3>
+        <p>{{ ultimoDisco.artista }}</p>
+      </div>
+    </ng-container>
+  </div>
+
   <div class="ion-text-center ion-padding" *ngIf="cargando">
     <ion-spinner></ion-spinner>
   </div>
 
-  <ion-list *ngIf="!cargando && discos.length > 0">
-    <ion-item *ngFor="let disco of discos" button (click)="verDetalle(disco)">
+  <ion-list *ngIf="!cargando && discosFiltrados.length > 0">
+    <ion-item *ngFor="let disco of discosFiltrados" button (click)="verDetalle(disco)">
       <ion-label>
         <h2>{{ disco.titulo }}</h2>
         <p>{{ disco.artista }}<span *ngIf="disco.anio"> · {{ disco.anio }}</span></p>
@@ -23,9 +54,8 @@
     </ion-item>
   </ion-list>
 
-  <div class="ion-text-center ion-padding" *ngIf="!cargando && discos.length === 0">
-    <p>Todavía no tenés discos guardados.</p>
-    <p>Tocá el botón + para escanear el primero.</p>
+  <div class="ion-text-center ion-padding" *ngIf="!cargando && discos.length > 0 && discosFiltrados.length === 0">
+    <p>No se encontraron discos que coincidan con la búsqueda.</p>
   </div>
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">

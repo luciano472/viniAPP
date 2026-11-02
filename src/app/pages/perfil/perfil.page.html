@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
@@ -8,18 +8,42 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-list lines="none">
-    <ion-item>
-      <ion-icon slot="start" name="person-circle-outline"></ion-icon>
-      <ion-label>
-        <p>Sesión iniciada como</p>
-        <h2>{{ email }}</h2>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <div class="contenedor">
 
-  <ion-button expand="block" color="danger" fill="outline" class="ion-margin-top" (click)="cerrarSesion()">
-    <ion-icon slot="start" name="log-out-outline"></ion-icon>
-    Cerrar sesión
-  </ion-button>
+    <section class="cabecera">
+      <div class="avatar">{{ inicial || '?' }}</div>
+      <h1>{{ nombre || 'Mi perfil' }}</h1>
+      <p class="email">{{ email }}</p>
+    </section>
+
+    <section class="estadisticas">
+      <div class="dato">
+        <span class="numero">{{ cargando ? '–' : totalDiscos }}</span>
+        <span class="etiqueta">{{ totalDiscos === 1 ? 'Disco' : 'Discos' }}</span>
+      </div>
+      <div class="dato">
+        <span class="numero">{{ cargando ? '–' : totalArtistas }}</span>
+        <span class="etiqueta">{{ totalArtistas === 1 ? 'Artista' : 'Artistas' }}</span>
+      </div>
+      <div class="dato">
+        <span class="numero">{{ cargando ? '–' : decadaFavorita }}</span>
+        <span class="etiqueta">Década favorita</span>
+      </div>
+    </section>
+
+    <section class="acciones">
+      <ion-list lines="none">
+        <ion-item button [detail]="true" lines="full" (click)="cambiarPassword()">
+          <ion-icon slot="start" name="key-outline"></ion-icon>
+          <ion-label>Cambiar contraseña</ion-label>
+        </ion-item>
+        <ion-item button [detail]="false" class="salir" (click)="confirmarCerrarSesion()">
+          <ion-icon slot="start" name="log-out-outline"></ion-icon>
+          <ion-label>Cerrar sesión</ion-label>
+        </ion-item>
+      </ion-list>
+    </section>
+
+    <p class="pie">VINIAPP · Los datos de los discos vienen de MusicBrainz</p>
+  </div>
 </ion-content>

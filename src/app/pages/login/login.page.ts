@@ -16,6 +16,7 @@ export class LoginPage {
   esError = true;
   cargando = false;
   pendienteConfirmar = false;
+  modoRegistro = false;
 
   constructor(
     private auth: Auth,
@@ -32,6 +33,14 @@ export class LoginPage {
     this.esError = true;
     this.cargando = false;
     this.pendienteConfirmar = false;
+    this.modoRegistro = false;
+    this.cdr.detectChanges();
+  }
+
+  cambiarModo() {
+    this.modoRegistro = !this.modoRegistro;
+    this.mensaje = '';
+    this.esError = true;
     this.cdr.detectChanges();
   }
 

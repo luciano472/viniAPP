@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   signUp, confirmSignUp, signIn, signOut,
-  getCurrentUser, fetchUserAttributes, resendSignUpCode
+  getCurrentUser, fetchUserAttributes, resendSignUpCode, updatePassword
 } from 'aws-amplify/auth';
 
 @Injectable({
@@ -54,6 +54,29 @@ export class Auth {
     return false;
   }
 }
+
+  async cambiarPassword(
+    actual: string,
+    nueva: string
+  ): Promise<'ok' | 'incorrecta' | 'invalida' | 'limite' | 'error'> {
+    try {
+      await updatePassword({ oldPassword: actual, newPassword: nueva });
+      return 'ok';
+    } catch (e: any) {
+      console.error('Error al cambiar la contraseña', e);
+      switch (e?.name) {
+        case 'NotAuthorizedException':
+          return 'incorrecta';
+        case 'InvalidPasswordException':
+        case 'InvalidParameterException':
+          return 'invalida';
+        case 'LimitExceededException':
+          return 'limite';
+        default:
+          return 'error';
+      }
+    }
+  }
 
   async logout(): Promise<void> {
     try {
