@@ -6,40 +6,30 @@ export interface Data {
 }
 
 export interface Album {
-    id:                    string;
-    score:                 number;
-    count:                 number;
-    title:                 string;
-    status:                string;
-    packaging:             string;
-    artistCredit:       ArtistCredit[];
-    releaseGroup:       ReleaseGroup;
-    date:                  string;
-    country:               string;
-    barcode:               string;
-    trackCount:         number;
-    media:                 Media[];
+    id:            string;
+    score:         number;
+    title:         string;
+    artistCredit:  ArtistCredit[];
+    releaseGroup:  ReleaseGroup;
+    date:          string;
+    country:       string;
+    barcode:       string;
+    media:         Media[];
 }
 
 export interface ArtistCredit {
-    name:   string;
-    artist: Artist;
-}
-
-interface Artist {
-    id:                  string;
-    name:                string;
-    disambiguation?:     string;
+    name:           string;
+    disambiguation: string;
 }
 
 export interface Media {
     id:            string;
     format:        string;
-    discCount:  number;
-    trackCount: number;
+    discCount:     number;
+    trackCount:    number;
 }
 
 export interface ReleaseGroup {
-    id:                string;
-    title:             string;
+    id:        string;
+    title:     string;
 }

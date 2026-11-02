@@ -108,10 +108,6 @@ export class MusicbrainzService {
       })
   }
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
   async buscarCancion(nombreCancion: string, nombreBanda: string): Promise<Recording[]>{
     const url = `${this.baseUrlDev}recording?query=${nombreCancion} AND artist=${nombreBanda}&fmt=json`
 
@@ -154,19 +150,5 @@ export class MusicbrainzService {
           return MusicBrainzAdapter.toLabel(lab);
         })
       })
-  }
-
-  async buscarPorCodigo(codigo: string): Promise<Disco | null> {
-    if (codigo === '0000000000000') {
-      return null; // para simular un código que no existe
-    }
-    return {
-      id: Date.now().toString(),
-      titulo: 'Disco de prueba',
-      artista: 'Artista de prueba',
-      anio: 2000,
-      codigoBarras: codigo,
-      fechaAlta: new Date().toISOString()
-    };
   }
 }
