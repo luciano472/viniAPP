@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth } from '../../services/auth';
 import { ColeccionService } from '../../services/coleccion';
-import { Disco } from '../../models/disco';
+import { Album } from '../../models/Album.types';
 
 @Component({
   selector: 'app-home',
@@ -11,14 +11,14 @@ import { Disco } from '../../models/disco';
   standalone: false,
 })
 export class HomePage {
-  discos: Disco[] = [];
+  discos: Album[] = [];
   cargando = false;
   nombre = '';
   totalDiscos = 0;
   totalArtistas = 0;
-  ultimoDisco: Disco | null = null;
+  ultimoDisco: Album | null = null;
   busqueda = '';
-  discosFiltrados: Disco[] = [];
+  discosFiltrados: Album[] = [];
 
   constructor(
     private coleccion: ColeccionService,
@@ -40,11 +40,15 @@ export class HomePage {
   private calcularResumen() {
     this.totalDiscos = this.discos.length;
     this.totalArtistas = new Set(
-      this.discos.map(d => d.artista.trim().toLowerCase())
+      this.discos.map(d => this.artistaDe(d).trim().toLowerCase())
     ).size;
-    this.ultimoDisco = this.discos.length
-      ? [...this.discos].sort((a, b) => b.fechaAlta.localeCompare(a.fechaAlta))[0]
-      : null;
+    // Los discos se agregan al final de la lista, así que el último agregado es el último elemento
+    this.ultimoDisco = this.discos.length ? this.discos[this.discos.length - 1] : null;
+  }
+
+  // Un Album puede venir sin artista; devolvemos '' para no romper
+  artistaDe(album: Album): string {
+    return album.artistCredit?.[0]?.name ?? '';
   }
 
   private armarNombre(email: string): string {
@@ -60,8 +64,8 @@ export class HomePage {
     const texto = this.normalizar(this.busqueda);
     this.discosFiltrados = texto
       ? this.discos.filter(d =>
-        this.normalizar(d.titulo).includes(texto) ||
-        this.normalizar(d.artista).includes(texto)
+        this.normalizar(d.title ?? '').includes(texto) ||
+        this.normalizar(this.artistaDe(d)).includes(texto)
       )
       : [...this.discos];
   }
@@ -73,7 +77,7 @@ export class HomePage {
       .trim();
   }
 
-  verDetalle(disco: Disco) {
+  verDetalle(disco: Album) {
     this.router.navigate(['/detalle', disco.id]);
   }
 

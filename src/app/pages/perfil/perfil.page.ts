@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Auth } from '../../services/auth';
 import { ColeccionService } from '../../services/coleccion';
-import { Disco } from '../../models/disco';
+import { Album } from '../../models/Album.types';
 
 @Component({
   selector: 'app-perfil',
@@ -53,12 +53,16 @@ export class PerfilPage {
   }
 
   // Único lugar que conoce los campos del modelo de discos.
-  // Si el modelo cambia (por ejemplo a Album), solo hay que tocar este método.
-  private datosParaEstadisticas(d: Disco): { artista: string; anio?: number } {
-    return { artista: d.artista, anio: d.anio };
+  // Si el modelo cambia, solo hay que tocar este método.
+  // "date" viene como texto ("1979-05-25"); parseInt se queda con el año.
+  private datosParaEstadisticas(d: Album): { artista: string; anio?: number } {
+    return {
+      artista: d.artistCredit?.[0]?.name ?? '',
+      anio: parseInt(d.date) || undefined,
+    };
   }
 
-  private calcularEstadisticas(discos: Disco[]) {
+  private calcularEstadisticas(discos: Album[]) {
     const datos = discos.map(d => this.datosParaEstadisticas(d));
 
     this.totalDiscos = datos.length;

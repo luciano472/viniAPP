@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { EscaneoService } from '../../services/escaneo';
+import { MusicbrainzService } from '../../services/musicbrainz';
+import { Album } from '../../models/Album.types';
 
 @Component({
   selector: 'app-scan',
@@ -12,11 +14,13 @@ import { EscaneoService } from '../../services/escaneo';
 export class ScanPage {
   codigoManual = '';
   mensaje = '';
+  albums: Album[] = [];
 
   constructor(
     private escaneo: EscaneoService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private api: MusicbrainzService
   ) {}
 
   async escanear() {
@@ -30,12 +34,18 @@ export class ScanPage {
     }
   }
 
-  buscarManual() {
-    const codigo = this.codigoManual.trim();
-    if (!codigo) {
-      this.mensaje = 'Ingresá un código de barras';
-      return;
+  async buscarAlbum() {
+      const codigo = this.codigoManual.trim();
+      if(!codigo){
+        this.mensaje = 'Ingresá un código de barras.'
+      }
+      
+      try {
+        this.albums = await this.api.buscarPorCodigoDeBarras(codigo);
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+
+      this.router.navigate(['/resultado', codigo]);
     }
-    this.router.navigate(['/resultado', codigo]);
-  }
 }

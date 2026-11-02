@@ -35,8 +35,8 @@
 
       <div class="ultimo" *ngIf="ultimoDisco" (click)="verDetalle(ultimoDisco)">
         <span class="etiqueta">Último agregado</span>
-        <h3>{{ ultimoDisco.titulo }}</h3>
-        <p>{{ ultimoDisco.artista }}</p>
+        <h3>{{ ultimoDisco.title }}</h3>
+        <p>{{ artistaDe(ultimoDisco) }}</p>
       </div>
     </ng-container>
   </div>
@@ -48,8 +48,8 @@
   <ion-list *ngIf="!cargando && discosFiltrados.length > 0">
     <ion-item *ngFor="let disco of discosFiltrados" button (click)="verDetalle(disco)">
       <ion-label>
-        <h2>{{ disco.titulo }}</h2>
-        <p>{{ disco.artista }}<span *ngIf="disco.anio"> · {{ disco.anio }}</span></p>
+        <h2>{{ disco.title }}</h2>
+        <p>{{ artistaDe(disco) }}<span *ngIf="disco.date"> · {{ disco.date }}</span></p>
       </ion-label>
     </ion-item>
   </ion-list>
