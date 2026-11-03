@@ -1,25 +1,82 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Perfil</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Mi Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-list lines="none">
-    <ion-item>
-      <ion-icon slot="start" name="person-circle-outline"></ion-icon>
-      <ion-label>
-        <p>Sesión iniciada como</p>
-        <h2>{{ email }}</h2>
-      </ion-label>
-    </ion-item>
-  </ion-list>
 
-  <ion-button expand="block" color="danger" fill="outline" class="ion-margin-top" (click)="cerrarSesion()">
-    <ion-icon slot="start" name="log-out-outline"></ion-icon>
-    Cerrar sesión
-  </ion-button>
+  <!-- 1. Cabecera: Avatar y estado -->
+  <div class="ion-text-center ion-margin-bottom ion-padding-top">
+    <ion-avatar style="margin: 0 auto; width: 100px; height: 100px; border: 3px solid var(--ion-color-primary);">
+      <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Foto de perfil" />
+    </ion-avatar>
+    <h2 style="margin-top: 15px; font-weight: bold;">Sesión Iniciada</h2>
+    <p color="medium">{{ email }}</p>
+  </div>
+
+  <!-- 2. Tarjeta: Datos de la Cuenta -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Datos de la Cuenta</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="full">
+        <ion-item>
+          <ion-icon name="mail-outline" slot="start" color="primary"></ion-icon>
+          <ion-label>
+            <h3>Correo Electrónico</h3>
+            <p>{{ email }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="person-outline" slot="start" color="primary"></ion-icon>
+          <ion-label>
+            <h3>Rol de Usuario</h3>
+            <p>Usuario Registrado</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="disc-outline" slot="start" color="primary"></ion-icon>
+          <ion-label>
+            <h3>Aplicación</h3>
+            <p>viniAPP - Catálogo Musical</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- 3. Tarjeta: Preferencias de la App -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Preferencias</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="full">
+        <ion-item>
+          <ion-icon name="notifications-outline" slot="start" color="primary"></ion-icon>
+          <ion-label>Notificaciones</ion-label>
+          <ion-toggle slot="end" [checked]="true"></ion-toggle>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="moon-outline" slot="start" color="primary"></ion-icon>
+          <ion-label>Modo Oscuro</ion-label>
+          <ion-toggle slot="end"></ion-toggle>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- 4. Botón: Cerrar Sesión -->
+  <div class="ion-padding-top ion-margin-top">
+    <ion-button expand="block" color="danger" (click)="cerrarSesion()">
+      <ion-icon slot="start" name="log-out-outline"></ion-icon>
+      Cerrar Sesión
+    </ion-button>
+  </div>
+
 </ion-content>
