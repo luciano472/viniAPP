@@ -33,7 +33,12 @@ export class DetallePage {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
     this.cargando = true;
     this.noEncontrado = false;
-    this.disco = await this.coleccion.obtenerDisco(id) ?? null;
+    try {
+      this.disco = await this.coleccion.obtenerDisco(id) ?? null;
+    } catch (error) {
+      console.error('Error al cargar el disco', error);
+      this.disco = null;
+    }
 
     if (!this.disco || !this.disco.releaseGroup) {
       this.noEncontrado = true;

@@ -29,12 +29,17 @@ export class HomePage {
 
   async ionViewWillEnter() {
     this.cargando = true;
-    this.discos = await this.coleccion.obtenerDiscos();
-    this.calcularResumen();
-    this.filtrar();
-    this.nombre = this.armarNombre(await this.auth.obtenerEmail());
-    this.cargando = false;
-    this.cdr.detectChanges();
+    try {
+      this.discos = await this.coleccion.obtenerDiscos();
+      this.calcularResumen();
+      this.filtrar();
+      this.nombre = this.armarNombre(await this.auth.obtenerEmail());
+    } catch (e) {
+      console.error('Error al cargar la colección', e);
+    } finally {
+      this.cargando = false;
+      this.cdr.detectChanges();
+    }
   }
 
   private calcularResumen() {

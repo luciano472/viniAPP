@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "217378531011",
+    "project_id": "viniapp-8fab2",
+    "storage_bucket": "viniapp-8fab2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217378531011:android:255b8567e0e990304ba476",
+        "android_client_info": {
+          "package_name": "com.vini.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiyZw8Q5txUGdSHFUvDCBImny8Vk1VeH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
