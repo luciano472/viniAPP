@@ -42,14 +42,22 @@ export class DetallePage {
       return; 
     }
 
-    try {
-      this.detallesAlbum = await this.api.obtenerCanciones(this.disco.releaseGroup.id);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      this.cargando = false;
-      this.cdr.detectChanges();
-    }
+    this.api.obtenerCanciones(this.disco.releaseGroup.id).subscribe({
+      next: (detalles: AlbumDetails[]) => {
+        if(detalles.length === 0) {
+          this.noEncontrado = true;
+        }
+        this.detallesAlbum = detalles;
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error al obtener las canciones: ', error);
+        this.cargando = false;
+        this.noEncontrado = true;
+        this.cdr.detectChanges();
+      }
+    })
   }
 
   async confirmarEliminar() {

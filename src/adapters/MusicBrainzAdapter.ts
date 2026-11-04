@@ -10,6 +10,12 @@ import {
 } from '../app/models/Song.types';
 
 export class MusicBrainzAdapter{
+  /**
+   * Mapea el resultado de una consulta a un modelo mucho mas limpio y simplificado.
+   * @param alb Objeto JSON con la respuesta del album. 
+   * @param codigo Código de barras con el que buscamos el album, lo usamos para mapear un dato si es necesario.
+   * @returns Retorna un Album con los datos que solamente necesitamos.
+   */
   static toAlbum(alb: any, codigo: string): Album {
       return {
         id: alb.id,
@@ -35,6 +41,11 @@ export class MusicBrainzAdapter{
       };
   }
   
+  /**
+   * Extrae y mapea los detalles del album.
+   * @param alb Es el dato en JSON que extraemos de la respuesta de la api.
+   * @returns Retorna un modelo con los detalles de un album en específico.
+   */
   static toAlbumDetails(alb: any): AlbumDetails{
     return {
       id: alb.id || '',
@@ -61,6 +72,11 @@ export class MusicBrainzAdapter{
     };
   }
 
+  /**
+   * Mapeamos los lanzamientos de un album.
+   * @param rel Es una versión en JSON del album. Es la respuesta de la api.
+   * @returns Retornamos un tipo AlbumRealeases.
+   */
   static toAlbumReleases(rel: any): AlbumReleases{
     return {
         id: rel.id || '',
@@ -78,7 +94,11 @@ export class MusicBrainzAdapter{
         title: rel.title || ''
       };
   }
-
+  /**
+   * Convierte la respuesta de un artista en un formato mucho mas limpio.
+   * @param art Es un artista en version JSON que nos responde la api.
+   * @returns Retornamos un tipo "Artista".
+   */
   static toArtist(art: any): Artist{
     return {
       id: art.id || '',
@@ -99,7 +119,11 @@ export class MusicBrainzAdapter{
       }))
     }
   }
-
+  /**
+   * Mapea una canción a un formato mucho mas limpio.
+   * @param rec Es un canción que viene en JSON desde la api.
+   * @returns Retorna un tipo "Recording".
+   */
   static toRecording(rec: any): Recording{
     return {
       id: rec.id || '',
@@ -119,6 +143,11 @@ export class MusicBrainzAdapter{
     }
   }
 
+  /**
+   * Mapea la información de un sello discografico.
+   * @param lab Es la información de un sello discografico en formato JSON.
+   * @returns Retornamos un "Label".
+   */
   static toLabel(lab: any): Label{
     return {
       id: lab.id || '',

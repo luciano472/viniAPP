@@ -18,7 +18,7 @@
     <ion-item *ngFor="let disco of discos" button (click)="verDetalle(disco)">
       <ion-label>
         <h2>{{ disco.title }}</h2>
-        <p>{{ disco.artistCredit[0].artist.name }}<span *ngIf="disco.date"> · {{ disco.date }}</span></p>
+        <p>{{ disco.artistCredit[0].name }}<span *ngIf="disco.date"> · {{ disco.date }}</span></p>
       </ion-label>
     </ion-item>
   </ion-list>

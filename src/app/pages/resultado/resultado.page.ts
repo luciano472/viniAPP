@@ -11,7 +11,6 @@ import { Album } from '../../models/Album.types';
   styleUrls: ['./resultado.page.scss'],
   standalone: false,
 })
-
 export class ResultadoPage {
   disco: Disco | null = null;
   albums: Album[] = [];
@@ -23,17 +22,31 @@ export class ResultadoPage {
     private router: Router,
     private musicbrainz: MusicbrainzService,
     private coleccion: ColeccionService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   async ionViewWillEnter() {
     const codigo = this.route.snapshot.paramMap.get('codigo') ?? '';
     this.cargando = true;
     this.noEncontrado = false;
-    this.albums = await this.musicbrainz.buscarPorCodigoDeBarras(codigo);
-    this.noEncontrado = this.albums.length === 0;
-    this.cargando = false;
-    this.cdr.detectChanges();
+    this.musicbrainz.buscarPorCodigoDeBarras(codigo).subscribe({
+      next: (albumsEncontrados: Album[]) => {
+        this.albums = albumsEncontrados;
+        this.cargando = false;
+
+        if (this.albums.length === 0) {
+          this.noEncontrado = true;
+        }
+
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error al buscar discos:', error);
+        this.cargando = false;
+        this.noEncontrado = true;
+        this.cdr.detectChanges();
+      },
+    });
   }
 
   async guardar(albumSeleccionado: Album) {

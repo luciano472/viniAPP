@@ -10,7 +10,6 @@ import { Album } from '../../models/Album.types';
   styleUrls: ['./scan.page.scss'],
   standalone: false,
 })
-
 export class ScanPage {
   codigoManual = '';
   mensaje = '';
@@ -20,7 +19,7 @@ export class ScanPage {
     private escaneo: EscaneoService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private api: MusicbrainzService
+    private api: MusicbrainzService,
   ) {}
 
   async escanear() {
@@ -35,17 +34,14 @@ export class ScanPage {
   }
 
   async buscarAlbum() {
-      const codigo = this.codigoManual.trim();
-      if(!codigo){
-        this.mensaje = 'Ingresá un código de barras.'
-      }
-      
-      try {
-        this.albums = await this.api.buscarPorCodigoDeBarras(codigo);
-      } catch (error) {
-        console.error("Error al obtener los datos:", error);
-      }
-
-      this.router.navigate(['/resultado', codigo]);
+    const codigo = this.codigoManual.trim();
+    if (!codigo) {
+      this.mensaje = 'Ingresá un código de barras.';
+      return;
     }
+
+    this.mensaje = '';
+    
+    this.router.navigate(['/resultado', codigo]);
+  }
 }
